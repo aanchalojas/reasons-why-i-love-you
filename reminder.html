@@ -1,1254 +1,493 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Love Youu</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>100 Reasons I Love You 💕</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet" />
     <style>
+        :root {
+            --blush: #f7c5c5;
+            --rose: #e8607a;
+            --deep: #c0334f;
+            --petal: #fff0f3;
+            --cream: #fffaf9;
+            --text: #3a1a22;
+            --soft: #9b4460;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #ffe6e6;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 20px;
+            font-family: 'Lato', sans-serif;
+            background: var(--cream);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .card-container {
-            width: 150px;
-            height: 150px;
-            margin: 15px;
-            perspective: 1000px;
+        /* ── floating petals ── */
+        .petals {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
         }
 
-        .card {
+        .petal {
+            position: absolute;
+            top: -40px;
+            font-size: 1.2rem;
+            opacity: 0;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) rotate(0deg);
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: translateX(60px) rotate(360deg);
+                opacity: 0;
+                top: 110vh;
+            }
+        }
+
+        /* ── hero ── */
+        .hero {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 72px 24px 52px;
+            background: linear-gradient(160deg, #ffe0e8 0%, #fff0f3 60%, var(--cream) 100%);
+        }
+
+        .hero-eyebrow {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.78rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--soft);
+            margin-bottom: 14px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 6vw, 3.6rem);
+            color: var(--text);
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 em {
+            color: var(--rose);
+            font-style: italic;
+        }
+
+        .hero-sub {
+            font-size: 1rem;
+            color: var(--soft);
+            font-weight: 300;
+            max-width: 460px;
+            margin: 0 auto 32px;
+            line-height: 1.6;
+        }
+
+        .counter-bar {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            background: white;
+            border: 1.5px solid var(--blush);
+            border-radius: 999px;
+            padding: 8px 20px;
+            font-size: 0.85rem;
+            color: var(--soft);
+        }
+
+        .counter-bar strong {
+            color: var(--rose);
+            font-size: 1rem;
+        }
+
+        /* ── grid ── */
+        .grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 18px;
+            padding: 40px 28px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ── card ── */
+        .card-wrap {
+            perspective: 900px;
+            height: 190px;
+            opacity: 0;
+            transform: scale(0.88) translateY(14px);
+            transition: opacity 0.45s ease, transform 0.45s ease;
+        }
+
+        .card-wrap.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .card-inner {
             width: 100%;
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.8s;
+            transition: transform 0.65s cubic-bezier(.4, 0, .2, 1);
             cursor: pointer;
+            border-radius: 18px;
         }
 
-        .card.flipped {
+        .card-wrap:hover .card-inner:not(.flipped) {
+            transform: rotateY(8deg) scale(1.03);
+            box-shadow: -6px 14px 32px rgba(200, 50, 80, 0.18);
+        }
+
+        .card-inner.flipped {
             transform: rotateY(180deg);
         }
 
-        .card-front, .card-back {
+        .face {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            inset: 0;
+            border-radius: 18px;
             backface-visibility: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            flex-direction: column;
+            padding: 16px;
+            text-align: center;
         }
 
-        .card-front {
-            background-color: #ff4d4d;
-            color: white;
+        /* front */
+        .face-front {
+            background: linear-gradient(135deg, var(--rose) 0%, var(--deep) 100%);
+            box-shadow: 0 6px 22px rgba(200, 50, 80, 0.3);
         }
 
-        .card-back {
-            background-color: white;
-            color: #ff4d4d;
+        .num-badge {
+            position: absolute;
+            top: 12px;
+            left: 14px;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 0.08em;
+        }
+
+        .big-heart {
+            font-size: 3rem;
+            line-height: 1;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+            transition: transform 0.3s;
+        }
+
+        .card-wrap:hover .big-heart {
+            transform: scale(1.15) rotate(-6deg);
+        }
+
+        .tap-hint {
+            margin-top: 10px;
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        /* back */
+        .face-back {
+            background: var(--petal);
             transform: rotateY(180deg);
-            padding: 15px;
+            box-shadow: 0 6px 22px rgba(200, 50, 80, 0.15);
+            border: 1.5px solid var(--blush);
+        }
+
+        .back-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--rose);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .back-text {
+            font-size: 0.82rem;
+            color: var(--text);
+            line-height: 1.55;
+            font-weight: 400;
+        }
+
+        /* ── milestone stripe ── */
+        .milestone {
+            grid-column: 1 / -1;
             text-align: center;
-            font-size: 14px;
-            font-weight: bold;
+            padding: 6px 0 2px;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 0.9rem;
+            color: var(--soft);
             display: flex;
-            flex-direction: column; /* Stack children vertically */
-            justify-content: center;
             align-items: center;
+            gap: 10px;
         }
 
-        .card-number {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 8px; /* Add space between number and message */
-        }
-        .heart {
-            font-size: 60px;
+        .milestone::before,
+        .milestone::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--blush), transparent);
         }
 
-        h1 {
-            width: 100%;
+        /* ── footer ── */
+        footer {
+            position: relative;
+            z-index: 1;
             text-align: center;
-            color: #ff4d4d;
-            margin-bottom: 30px;
+            padding: 40px 20px 60px;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: var(--soft);
+        }
+
+        footer span {
+            color: var(--rose);
+            font-size: 1.4rem;
+        }
+
+        @media (max-width: 480px) {
+            .grid {
+                gap: 12px;
+                padding: 24px 14px 40px;
+            }
+
+            .card-wrap {
+                height: 160px;
+            }
         }
     </style>
 </head>
+
 <body>
-    <h1>Reasons Why I Love My Sweet Little Boy</h1>
-    
-    <!-- Card 1 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">1.</div>
-            You always make me smile, no matter what
-        </div>
-    </div>
-</div>
 
-<!-- Card 2 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">2.</div>
-            You believe in me, even when I don't.
-        </div>
-    </div>
-</div>
+    <!-- floating petals -->
+    <div class="petals" id="petals"></div>
 
-<!-- Card 3 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
+    <!-- hero -->
+    <header class="hero">
+        <p class="hero-eyebrow">for my sweet little boy</p>
+        <h1>Reasons Why I Love<br /><em>You</em></h1>
+        <p class="hero-sub">Flip each card to discover why you're the most wonderful person in my world.</p>
+        <div class="counter-bar">
+            <strong id="opened">0</strong>&nbsp;/ 100 revealed &nbsp;💕
         </div>
-        <div class="card-back">
-            <div class="card-number">3.</div>
-            You listen — truly listen.
-        </div>
-    </div>
-</div>
+    </header>
 
-<!-- Card 4 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">4.</div>
-            You support my dreams wholeheartedly.
-        </div>
-    </div>
-</div>
+    <!-- grid -->
+    <main class="grid" id="grid">
+    </main>
 
-<!-- Card 5 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">5.</div>
-            You're effortlessly handsome.
-        </div>
-    </div>
-</div>
-
-<!-- Card 6 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">6.</div>
-            You challenge me to grow.
-        </div>
-    </div>
-</div>
-
-<!-- Card 7 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">7.</div>
-            You make even the boring things fun.
-        </div>
-    </div>
-</div>
-
-<!-- Card 8 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">8.</div>
-            You make me feel safe.
-        </div>
-    </div>
-</div>
-
-<!-- Card 9 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">9.</div>
-            You always know how to cheer me up.
-        </div>
-    </div>
-</div>
-
-<!-- Card 10 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">10.</div>
-            You're my biggest cheerleader after your sasur.
-        </div>
-    </div>
-</div>
-
-<!-- Card 11 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">11.</div>
-            You laugh at my lame jokes.
-        </div>
-    </div>
-</div>
-
-<!-- Card 12 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">12.</div>
-            You take care of me in small, beautiful ways.
-        </div>
-    </div>
-</div>
-
-<!-- Card 13 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">13.</div>
-            You never give up — on life, on us. (Breakup krle exceptional.)
-        </div>
-    </div>
-</div>
-
-<!-- Card 14 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">14.</div>
-            You're hardworking and ambitious.
-        </div>
-    </div>
-</div>
-
-<!-- Card 15 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">15.</div>
-            Your smile is contagious!
-        </div>
-    </div>
-</div>
-
-<!-- Card 16 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">16.</div>
-            You're stronger than you think!
-        </div>
-    </div>
-</div>
-
-<!-- Card 17 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">17.</div>
-            You're incredibly intelligent.
-        </div>
-    </div>
-</div>
-
-<!-- Card 18 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">18.</div>
-            You remember the little things.
-        </div>
-    </div>
-</div>
-
-<!-- Card 19 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">19.</div>
-            You're capable of amazing things!
-        </div>
-    </div>
-</div>
-
-<!-- Card 20 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">20.</div>
-            You give the best advice.
-        </div>
-    </div>
-</div>
-
-<!-- Card 21 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">21.</div>
-            You see the best in me.
-        </div>
-    </div>
-</div>
-
-<!-- Card 22 -->
-<div class="card-container">
-    <div class="card" onclick="this.classList.toggle('flipped')">
-        <div class="card-front">
-            <div class="heart">❤️</div>
-        </div>
-        <div class="card-back">
-            <div class="card-number">22.</div>
-            You make me feel beautiful inside and out.
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">23. You respect me and my opinions.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">24. You let me be my weird self.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">25. You’re patient, even when I’m not.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">26. You’re very very romantic.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">27. You love my quirks.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">28. You make my life brighter.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">29. You’re a gentleman in every sense.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">30. You’re honest and loyal. Honest se yaad aaya papa ki dukaan kaisi h</div>
-        </div>
-    </div>
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">31. You care about people genuinely.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">32. You have the warmest smile.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">33. You’re my calm in the chaos.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">34. You inspire me to be better.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">35. You’re always up for adventure!</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">36. You say “I love you” and mean it. I mean you obviously have to.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">37. You make time for us.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">38. You understand me without words.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">39. You never judge me.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">40. You stand by me in every storm. You have to.</div>
-        </div>
-    </div>
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">41. You’re creative and unique.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">42. You share your thoughts and dreams with me.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">43. You respect boundaries.</div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">44. You trust me completely.</div>
-        </div>
-    </div>
-
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">45.</div>
-                You forgive me when I mess up.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">46.</div>
-                You share your food (even when you don't want to).
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">47.</div>
-                You laugh like no one's watching.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">48.</div>
-                You're a great listener.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">49.</div>
-                You always have something nice to say.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">50.</div>
-                You're silly in the best way.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">51.</div>
-                You talk to me about everything.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">52.</div>
-                You never let me feel alone.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">53.</div>
-                You hold my hand at the right times.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">54.</div>
-                You show love in actions, not just words.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">55.</div>
-                You're humble about your achievements.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">56.</div>
-                You dream big.
-            </div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">57.</div>
-                You value honesty.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">58.</div>
-                You're emotionally strong.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">59.</div>
-                You love animals.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">60.</div>
-                You believe in true love.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">61.</div>
-                You remember our special dates.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">62.</div>
-                You're passionate about what you love.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">63.</div>
-                You're proud of me.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">64.</div>
-                You make me feel lucky every day.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">65.</div>
-                You protect me without being possessive.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">66.</div>
-                You push me toward my goals.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">67.</div>
-                You're open-minded and thoughtful.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">68.</div>
-                You light up my world.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">69.</div>
-                You're goofy and cute.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">70.</div>
-                You appreciate the little moments.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">71.</div>
-                You give me space when I need it.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">72.</div>
-                You always try to make things right.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">73.</div>
-                You love me unconditionally.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">74.</div>
-                You bring peace to my overthinking mind.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">75.</div>
-                You say my name like it's your favorite word.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">76.</div>
-                You respect women and treat everyone with kindness.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">77.</div>
-                You bring balance to my life.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">78.</div>
-                You never make me feel "less than."
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">79.</div>
-                You see beauty in everyday things.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">80.</div>
-                You trust me with your heart.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">81.</div>
-                You give me butterflies every single time.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">82.</div>
-                You care about my happiness more than your ego.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">83.</div>
-                You help me through my fears.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">84.</div>
-                You make "forever" feel real.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">85.</div>
-                You're the best cuddle partner.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">86.</div>
-                You're adventurous and spontaneous.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">87.</div>
-                You never stop trying.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">88.</div>
-                You make me feel like I matter.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">89.</div>
-                You love with your whole heart.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">90.</div>
-                You're my partner and my best friend.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">91.</div>
-                You bring out the best in me.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">92.</div>
-                You've become my favorite habit.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">93.</div>
-                You complete the love stories I imagined.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">94.</div>
-                You're gentle, even in tough times.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">95.</div>
-                You accept my past and believe in our future.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">96.</div>
-                You're everything I ever wanted.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">97.</div>
-                You're my safe place.
-            </div>
-        </div>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">98.</div>
-                You are you — and I love every bit of it.
-            </div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">99.</div>
-                In a world full of noise, your love is my favorite melody.
-            </div>
-        </div>
-    </div>
-
-    <div class="card-container">
-        <div class="card" onclick="this.classList.toggle('flipped')">
-            <div class="card-front">
-                <div class="heart">❤️</div>
-            </div>
-            <div class="card-back">
-                <div class="card-number">100.</div>
-                You didn’t just walk into my life — you became my favorite part of it.
-            </div>
-        </div>
-    </div>
+    <footer>
+        Made with every piece of my heart &nbsp;<span>♥</span>
+    </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.card-container');
-            cards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.style.opacity = '1';
-                    card.style.transform = 'scale(1)';
-                }, index * 100);
+        const reasons = [
+            "You always make me smile, no matter what",
+            "You believe in me, even when I don't.",
+            "You listen — truly listen.",
+            "You support my dreams wholeheartedly.",
+            "You're effortlessly handsome.",
+            "You challenge me to grow.",
+            "You make even the boring things fun.",
+            "You make me feel safe.",
+            "You always know how to cheer me up.",
+            "You're my biggest cheerleader after your sasur.",
+            "You laugh at my lame jokes.",
+            "You take care of me in small, beautiful ways.",
+            "You never give up — on life, on us. (Breakup krle exceptional.)",
+            "You're hardworking and ambitious.",
+            "Your smile is contagious!",
+            "You're stronger than you think!",
+            "You're incredibly intelligent.",
+            "You remember the little things.",
+            "You're capable of amazing things!",
+            "You give the best advice.",
+            "You see the best in me.",
+            "You make me feel beautiful inside and out.",
+            "You respect me and my opinions.",
+            "You let me be my weird self.",
+            "You're patient, even when I'm not.",
+            "You're very very romantic.",
+            "You love my quirks.",
+            "You make my life brighter.",
+            "You're a gentleman in every sense.",
+            "You're honest and loyal. Honest se yaad aaya papa ki dukaan kaisi h",
+            "You care about people genuinely.",
+            "You have the warmest smile.",
+            "You're my calm in the chaos.",
+            "You inspire me to be better.",
+            "You're always up for adventure!",
+            "You say \"I love you\" and mean it. I mean you obviously have to.",
+            "You make time for us.",
+            "You understand me without words.",
+            "You never judge me.",
+            "You stand by me in every storm. You have to.",
+            "You're creative and unique.",
+            "You share your thoughts and dreams with me.",
+            "You respect boundaries.",
+            "You trust me completely.",
+            "You forgive me when I mess up.",
+            "You share your food (even when you don't want to).",
+            "You laugh like no one's watching.",
+            "You're a great listener.",
+            "You always have something nice to say.",
+            "You're silly in the best way.",
+            "You talk to me about everything.",
+            "You never let me feel alone.",
+            "You hold my hand at the right times.",
+            "You show love in actions, not just words.",
+            "You're humble about your achievements.",
+            "You dream big.",
+            "You value honesty.",
+            "You're emotionally strong.",
+            "You love animals.",
+            "You believe in true love.",
+            "You remember our special dates.",
+            "You're passionate about what you love.",
+            "You're proud of me.",
+            "You make me feel lucky every day.",
+            "You protect me without being possessive.",
+            "You push me toward my goals.",
+            "You're open-minded and thoughtful.",
+            "You light up my world.",
+            "You're goofy and cute.",
+            "You appreciate the little moments.",
+            "You give me space when I need it.",
+            "You always try to make things right.",
+            "You love me unconditionally.",
+            "You bring peace to my overthinking mind.",
+            "You say my name like it's your favorite word.",
+            "You respect women and treat everyone with kindness.",
+            "You bring balance to my life.",
+            "You never make me feel \"less than.\"",
+            "You see beauty in everyday things.",
+            "You trust me with your heart.",
+            "You give me butterflies every single time.",
+            "You care about my happiness more than your ego.",
+            "You help me through my fears.",
+            "You make \"forever\" feel real.",
+            "You're the best cuddle partner.",
+            "You're adventurous and spontaneous.",
+            "You never stop trying.",
+            "You make me feel like I matter.",
+            "You love with your whole heart.",
+            "You're my partner and my best friend.",
+            "You bring out the best in me.",
+            "You've become my favorite habit.",
+            "You complete the love stories I imagined.",
+            "You're gentle, even in tough times.",
+            "You accept my past and believe in our future.",
+            "You're everything I ever wanted.",
+            "You're my safe place.",
+            "You are you — and I love every bit of it.",
+            "In a world full of noise, your love is my favorite melody.",
+            "You didn't just walk into my life — you became my favorite part of it."
+        ];
+
+        const milestones = { 25: "Still going strong…", 50: "Halfway there, and it keeps getting better 💕", 75: "75 reasons and counting…", 100: "And a hundred more I'll never stop finding." };
+
+        const hearts = ["❤️", "🌸", "💖", "🌹", "💗", "✨", "💝", "🌷"];
+        const grid = document.getElementById('grid');
+        let opened = 0;
+
+        reasons.forEach((text, i) => {
+            const n = i + 1;
+
+            // milestone divider
+            if (milestones[n]) {
+                const div = document.createElement('div');
+                div.className = 'milestone';
+                div.textContent = milestones[n];
+                grid.appendChild(div);
+            }
+
+            const wrap = document.createElement('div');
+            wrap.className = 'card-wrap';
+            wrap.innerHTML = `
+    <div class="card-inner" data-index="${i}">
+      <div class="face face-front">
+        <span class="num-badge">${n}</span>
+        <div class="big-heart">${hearts[i % hearts.length]}</div>
+        <div class="tap-hint">tap to reveal</div>
+      </div>
+      <div class="face face-back">
+        <div class="back-num">${n}.</div>
+        <div class="back-text">${text}</div>
+      </div>
+    </div>`;
+            grid.appendChild(wrap);
+
+            wrap.addEventListener('click', () => {
+                const inner = wrap.querySelector('.card-inner');
+                const wasFlipped = inner.classList.contains('flipped');
+                inner.classList.toggle('flipped');
+                if (!wasFlipped) {
+                    opened++;
+                } else {
+                    opened--;
+                }
+                document.getElementById('opened').textContent = opened;
             });
         });
+
+        // intersection observer stagger
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach((e, idx) => {
+                if (e.isIntersecting) {
+                    setTimeout(() => e.target.classList.add('visible'), idx * 40);
+                    obs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.card-wrap').forEach(c => obs.observe(c));
+
+        // falling petals
+        const petalEl = document.getElementById('petals');
+        const petalChars = ['🌸', '🌺', '🌷', '💮', '✿', '❀'];
+        for (let i = 0; i < 22; i++) {
+            const p = document.createElement('div');
+            p.className = 'petal';
+            p.textContent = petalChars[i % petalChars.length];
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.fontSize = (0.8 + Math.random() * 0.9) + 'rem';
+            p.style.animationDuration = (8 + Math.random() * 12) + 's';
+            p.style.animationDelay = (Math.random() * 15) + 's';
+            petalEl.appendChild(p);
+        }
     </script>
 </body>
+
 </html>
